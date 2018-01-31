@@ -53,10 +53,23 @@ def ocr_img(image, region):
     answer = text[1:]
     return question, answer
 
+#将答案区整体识别，已提高识别速度
+def ocr_img_all(image, region):
+    question_region = image.crop(region[0])
+    question_region = binarizing(question_region.convert('L'), 190)
+    question = pytesseract.image_to_string(question_region, lang='chi_sim')
+    
+    answer_region = image.crop((region[1][0], region[1][1], region[-1][2], region[-1][3]))
+    answer_region = binarizing(answer_region.convert('L'), 190)
+    #answer_region.show()
+    answer_tt = pytesseract.image_to_string(answer_region, lang='chi_sim')
+    answer_tt  = answer_tt .split('\n')
+    answer = [x for x in answer_tt if x != '']
+    return question, answer
 
 if __name__ == '__main__':
     image = Image.open('./temp/screenshot.png')
     region = cal_region(image)
-    question, answer = ocr_img(image, region)
+    question, answer = ocr_img_all(image, region)
     print(question)
     print(answer)
