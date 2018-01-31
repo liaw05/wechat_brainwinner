@@ -1,0 +1,4 @@
+如果直接安装anaconda，只需要安装如下库：
+pytesseract
+aip
+安装tesseract-ocr软件
